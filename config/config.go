@@ -10,9 +10,15 @@ import (
 )
 
 type Config struct {
-	Mysqldb   mysql_db.DatabaseConfig `yaml:"mysql"`
-	SecretKey string                  `yaml:"secretKey"`
-	Server    Server                  `yaml:"server"`
+	Mysqldb mysql_db.DatabaseConfig `yaml:"mysql"`
+	Server  Server                  `yaml:"server"`
+	Jwt     Jwt                     `yaml:"jwt"`
+}
+
+type Jwt struct {
+	SecretKey       string        `yaml:"secretKey"`
+	AccessTokenTLL  time.Duration `yaml:"accessTokenTLL"`
+	RefreshTokenTLL time.Duration `yaml:"refreshTokenTLL"`
 }
 
 type Server struct {

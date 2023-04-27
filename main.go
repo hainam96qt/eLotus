@@ -14,7 +14,9 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	configs "elotus/config"
-	"elotus/internal/endpoint/registration"
+	authentication2 "elotus/internal/endpoint/authentication"
+	"elotus/internal/service/authentication"
+	"elotus/internal/service/jwt"
 	"elotus/pkg/db/mysql_db"
 )
 
@@ -68,14 +70,18 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 		w.Write([]byte("welcome"))
 	})
 
-	registration.InitRegistrationHandler(r, nil)
-
 	dbConn, err := mysql_db.ConnectDatabase(conf.Mysqldb)
 	if err != nil {
 		log.Panicf("failed to connect database:: %s \n", err)
 		return
 	}
-	_ = dbConn
+
+	// service
+	jwtService := jwt.NewJwtService(conf)
+	authSvc := authentication.NewAuthenticationService(conf, dbConn, jwtService)
+
+	// handler
+	authentication2.InitAuthenticationHandler(r, authSvc)
 
 	return &http.Server{
 		Addr:         conf.Server.Address,
