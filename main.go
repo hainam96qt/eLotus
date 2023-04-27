@@ -14,9 +14,9 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	configs "elotus/config"
-	"elotus/internal/endpoint/registration"
+	authentication2 "elotus/internal/endpoint/authentication"
+	"elotus/internal/service/authentication"
 	"elotus/internal/service/jwt"
-	registrationsvc "elotus/internal/service/registration"
 	"elotus/pkg/db/mysql_db"
 )
 
@@ -78,10 +78,10 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 
 	// service
 	jwtService := jwt.NewJwtService(conf)
-	registrationSvc := registrationsvc.NewRegistrationService(conf, dbConn, jwtService)
+	authSvc := authentication.NewAuthenticationService(conf, dbConn, jwtService)
 
 	// handler
-	registration.InitRegistrationHandler(r, registrationSvc)
+	authentication2.InitAuthenticationHandler(r, authSvc)
 
 	return &http.Server{
 		Addr:         conf.Server.Address,
