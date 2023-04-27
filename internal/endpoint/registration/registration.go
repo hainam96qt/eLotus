@@ -19,7 +19,7 @@ type (
 	}
 
 	registrationService interface {
-		CreateRegistration(ctx context.Context, req *model.CreateRegistrationRequest) error
+		CreateRegistration(ctx context.Context, req *model.CreateRegistrationRequest) (*model.CreateRegistrationResponse, error)
 	}
 )
 
@@ -37,10 +37,17 @@ func (e *Endpoint) createRegistrationRequest(w http.ResponseWriter, r *http.Requ
 
 	var req model.CreateRegistrationRequest
 	if err := request.DecodeJSON(ctx, r.Body, &req); err != nil {
-		log.Panicf("read request body error: %s \n", err)
+		log.Printf("read request body error: %s \n", err)
 		response.JSON(w, error2.NewXError(err.Error()))
 		return
 	}
 
-	response.JSON(w, req)
+	res, err := e.registrationSvc.CreateRegistration(ctx, &req)
+	if err != nil {
+		log.Printf("failed to register new user: %s \n", err)
+		response.JSON(w, error2.NewXError(err.Error()))
+		return
+	}
+
+	response.JSON(w, res)
 }

@@ -10,9 +10,10 @@ services:
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: on-failure
     environment:
+      MYSQL_ROOT_HOST: '172.18.0.1'
       MYSQL_ROOT_PASSWORD: mysql_db
-      MYSQL_DATABASE: payment-s1
-      MYSQL_USER: payment_user
+      MYSQL_DATABASE: elotus
+      MYSQL_USER: root
       MYSQL_PASSWORD: mysql_db
     volumes:
       - ~/volumes/mysql_db:/var/lib/mysql_db

@@ -20,7 +20,11 @@ server:
 mysql:
   host: 127.0.0.1
   port: 3306
-  database: payment-s1
-  user: payment_user
+  database: elotus
+  user: root
   password: mysql_db
-secretKey: abcdef123
+
+jwt:
+  secretKey: "abcdef123"
+  accessTokenTLL: 1h
+  refreshTokenTLL: 300h

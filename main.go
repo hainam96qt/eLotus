@@ -15,6 +15,8 @@ import (
 
 	configs "elotus/config"
 	"elotus/internal/endpoint/registration"
+	"elotus/internal/service/jwt"
+	registrationsvc "elotus/internal/service/registration"
 	"elotus/pkg/db/mysql_db"
 )
 
@@ -68,14 +70,18 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 		w.Write([]byte("welcome"))
 	})
 
-	registration.InitRegistrationHandler(r, nil)
-
 	dbConn, err := mysql_db.ConnectDatabase(conf.Mysqldb)
 	if err != nil {
 		log.Panicf("failed to connect database:: %s \n", err)
 		return
 	}
-	_ = dbConn
+
+	// service
+	jwtService := jwt.NewJwtService(conf)
+	registrationSvc := registrationsvc.NewRegistrationService(conf, dbConn, jwtService)
+
+	// handler
+	registration.InitRegistrationHandler(r, registrationSvc)
 
 	return &http.Server{
 		Addr:         conf.Server.Address,
