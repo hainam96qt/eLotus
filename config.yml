@@ -1,0 +1,26 @@
+server:
+  address: ":8000"
+  readTimeout: "30s"
+  writeTimeout: "30s"
+  shutdownTimeout: "10s"
+  cors:
+    allowOrigins:
+      - "http://*"
+      - "https://*"
+    allowMethods: [ "OPTIONS", "HEAD", "POST", "GET", "PATCH", "DELETE" ]
+    allowHeaders:
+      - Content-Type
+      - Accept
+      - Accept-Language
+      - Authorization
+      - X-Request-Id
+  responseLogLimitByte: 10000
+  uploadSizeLimitByte: 5242880
+
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  database: payment-s1
+  user: payment_user
+  password: mysql_db
+secretKey: abcdef123
