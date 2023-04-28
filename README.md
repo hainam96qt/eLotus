@@ -2,12 +2,12 @@
 
 ## Config to run
 ### 1. Generate:
-sqlc:
+Gen code from sql:
 ```sh
 $ sqlc generate
 ```
 
 ### 2.Docker:
 ```sh
-$ ./docker/docker-compose up -d
+$ docker-compose up -d
 ```

@@ -14,9 +14,9 @@ import (
 
 	configs "elotus/config"
 	authentication2 "elotus/internal/endpoint/authentication"
-	upload_file "elotus/internal/endpoint/upload-file"
+	upload_file "elotus/internal/endpoint/file"
 	"elotus/internal/service/authentication"
-	upload_file2 "elotus/internal/service/files"
+	upload_file2 "elotus/internal/service/file"
 	"elotus/internal/service/jwt"
 	"elotus/pkg/db/mysql_db"
 	"elotus/pkg/midleware"
