@@ -11,13 +11,15 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 
 	configs "elotus/config"
 	authentication2 "elotus/internal/endpoint/authentication"
+	upload_file "elotus/internal/endpoint/upload-file"
 	"elotus/internal/service/authentication"
 	"elotus/internal/service/jwt"
+	upload_file2 "elotus/internal/service/upload-file"
 	"elotus/pkg/db/mysql_db"
+	"elotus/pkg/midleware"
 )
 
 func main() {
@@ -63,9 +65,9 @@ func main() {
 
 func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http.Server, err error) {
 	r := chi.NewRouter()
+	midleware.AuthenticateMW = midleware.NewAuthenticateMiddleware(jwt.Algorithm.Alg(), conf.Jwt.SecretKey)
 
 	// create endpoint here
-	r.Use(middleware.Logger)
 	r.Get("/hello", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
@@ -79,9 +81,11 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 	// service
 	jwtService := jwt.NewJwtService(conf)
 	authSvc := authentication.NewAuthenticationService(conf, dbConn, jwtService)
+	uploadFileSvc := upload_file2.NewUploadFileService(conf)
 
 	// handler
 	authentication2.InitAuthenticationHandler(r, authSvc)
+	upload_file.InitAuthenticationHandler(r, uploadFileSvc)
 
 	return &http.Server{
 		Addr:         conf.Server.Address,
