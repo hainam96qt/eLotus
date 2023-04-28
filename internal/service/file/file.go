@@ -1,4 +1,4 @@
-package files
+package file
 
 import (
 	"context"
@@ -17,6 +17,7 @@ import (
 
 // Size constants
 const (
+	// 8MB
 	maxSizeUpload = 8 * 1 << 20
 )
 

@@ -1,4 +1,4 @@
-package upload_file
+package file
 
 import (
 	"context"
