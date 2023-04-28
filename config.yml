@@ -27,4 +27,4 @@ mysql:
 jwt:
   secretKey: "abcdef123"
   accessTokenTLL: 1h
-  refreshTokenTLL: 300h
+  refreshTokenTLL: 168h

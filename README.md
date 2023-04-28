@@ -11,9 +11,3 @@ $ sqlc generate
 ```sh
 $ ./docker/docker-compose up -d
 ```
-
-### 3 .Run:
-```sh
-$ go install ./...
-$ payment-challenge
-```
