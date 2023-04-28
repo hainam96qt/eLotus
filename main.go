@@ -16,8 +16,8 @@ import (
 	authentication2 "elotus/internal/endpoint/authentication"
 	upload_file "elotus/internal/endpoint/upload-file"
 	"elotus/internal/service/authentication"
+	upload_file2 "elotus/internal/service/files"
 	"elotus/internal/service/jwt"
-	upload_file2 "elotus/internal/service/upload-file"
 	"elotus/pkg/db/mysql_db"
 	"elotus/pkg/midleware"
 )
@@ -81,7 +81,7 @@ func initHTTPServer(ctx context.Context, conf *configs.Config) (httpServer *http
 	// service
 	jwtService := jwt.NewJwtService(conf)
 	authSvc := authentication.NewAuthenticationService(conf, dbConn, jwtService)
-	uploadFileSvc := upload_file2.NewUploadFileService(conf)
+	uploadFileSvc := upload_file2.NewUploadFileService(conf, dbConn)
 
 	// handler
 	authentication2.InitAuthenticationHandler(r, authSvc)
